@@ -11,7 +11,7 @@ var expressSession = require('express-session');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var sessions = require('./routes/sessions')
-
+var agents = require('./routes/agents')
 var app = express();
 
 // view engine setup
@@ -34,7 +34,7 @@ app.use(expressSession({
   duration: 60 * 60 * 24 * 365 * 10,
   activeDuration: 60 * 60 * 24 * 365 *10,
   saveUninitialized : true,
-  resave: false
+  resave: true
   }));
 //Initializing passport
 app.use(passport.initialize());
@@ -51,6 +51,7 @@ app.use(cookieParser('njskdfjkjns72^2'))
 app.use('/', routes);
 app.use('/users', users);
 app.use('/sessions', sessions)
+app.use('/agents', agents)
 
 //========================404 Error Handling======================
 // catch 404 and forward to error handler

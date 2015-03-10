@@ -1,34 +1,24 @@
 var express = require('express');
 var passport = require('../passports/passport.js')
 var router = express.Router();
-
-
-// router.route('/')
-// 	.all(function(req, res, next) {
-// 	  // runs for all HTTP verbs first
-// 	  // think of it as route specific middleware!
-// 	  next();
-// 	})
-
-// 	.get(function(req, res, next) {
-// 	  res.send("GET User Request");
-// 	})
-
-// 	.put(function(req, res, next) {
-// 	  res.send("PUT User Request");
-// 	})
-
-// 	.post(function(req, res, next) {
-// 	  res.send("POST User Request");
-// 	})
+var User = require('../objects/user')
+var Profile = require('../objects/profile')
 
 	/* GET users listing. */
-	router.get('/', function(req, res, next) {
-	  res.send('respond with a resource');
+	router.get('/', ensureAuthenticated, function(req, res, next) {
+		res.send('respond with a resource');
 	});
 
-	router.post('/', passport.authenticate('signup'), function(req, res, next){
+	router.post('/', passport.authenticate('user-signup'), function(req, res, next){
+		var user = new User(req.user.username, req.user.password)
+		user.profile = new Profile(req.body.firstname, req.body.lastname, req.body.email, req.body.mobile_number)
+		user.profile.insert(req.user._id)
 		res.send('post request to /user')
 	});
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/');
+}
 
 module.exports = router;
