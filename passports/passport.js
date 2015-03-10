@@ -123,22 +123,13 @@ function(req, username, password, done) {
 	        } else {
 	          // if there is no user with that email
 	          // create the user
-	          var newUser = new User();
-	          // set the user's local credentials
-	          newUser.username = username;
-	          newUser.password = bcrypt.hashSync(password);
-
-	          // save the user
-	          //user_db.identity.insert(newUser);
-	          agent_db.collection('account').insert(newUser, function(err, result) {
+	          var newAgent = new Agent(username, password);
+	          agent_db.collection('account').insert(newAgent.account, function(err, result) {
 	          	if (err){ 
 	          		throw err; 
 	          	}
-	          	if (result) {
-	          		console.log('Agent Added!');
-	          	}
+	          	done(null, result[0]);
 	          });
-	          done(null, newUser);
 	      }
 	  })
   }
