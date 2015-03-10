@@ -1,0 +1,93 @@
+// Configurting Passport
+// var expressSession = require('express-session');
+var passport = require('passport')
+var flash = require('connect-flash')
+var LocalStrategy = require('passport-local').Strategy
+var user_db = require('mongoskin').db('mongodb://52.11.66.117:27017/User');
+var bodyParser = require('body-parser')
+var cookieParser = require('cookie-parser')
+var bcrypt = require('bcrypt-nodejs')
+
+// Passport Serializer for session
+passport.serializeUser(function(user, done) {
+	done(null, user);
+});
+
+// Passport Deserializer for session
+passport.deserializeUser(function(obj, done) {
+	done(null, obj);
+});
+
+//User constructor
+function User() {
+	this.username = "";
+	this.password = "";
+}
+
+passport.use('login', new LocalStrategy({
+	passReqToCallback : true
+},
+function(req, username, password, done) { 
+    // check in mongo if a user with username exists or not
+    user_db.collection('identity').find({username:username}).toArray( 
+    	function(err, result) {
+        // In case of any error, return using the done method
+        if (err)
+        	return done(err);
+        // Username does not exist, log error & redirect back
+        if (!result[0]){
+        	console.log('User Not Found with username '+ username);
+        	return done(null, false);                 
+        }
+        // User exists but wrong password, log the error 
+        if (!bcrypt.compareSync(password, result[0].password)){
+        	console.log('Invalid Password');
+        	return done(null, false);
+        }
+        return done(null, result[0]);
+    }
+    );
+}));
+
+passport.use('signup', new LocalStrategy({
+	passReqToCallback : true
+},
+function(req, username, password, done) {
+      // find a user in Mongo with provided username
+      user_db.collection('identity').find({username:username}).toArray(
+      	function(err, result) {
+	        // In case of any error return
+	        if (err){
+	        	console.log('Error in SignUp: '+err);
+	        	return done(err);
+	        }
+	        // already exists
+	        if (result[0]) {
+	        	console.log(result[0]);
+	        	return done(null, false);
+	        } else {
+	          // if there is no user with that email
+	          // create the user
+	          var newUser = new User();
+	          // set the user's local credentials
+	          newUser.username = username;
+	          newUser.password = bcrypt.hashSync(password);
+
+	          // save the user
+	          //user_db.identity.insert(newUser);
+	          user_db.collection('identity').insert(newUser, function(err, result) {
+	          	if (err){ 
+	          		throw err; 
+	          	}
+	          	if (result) {
+	          		console.log('User Added!');
+	          	}
+	          });
+	          done(null, newUser);
+	      }
+	  })
+  }
+  )
+);
+
+module.exports = passport;
