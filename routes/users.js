@@ -16,7 +16,7 @@ var ObjectID = require('mongoskin').ObjectID
 	router.post('/', passport.authenticate('user-signup'), function(req, res, next){
 		var user = new User(req.user.username, req.user.password)
 		user.profile = new Profile(req.body.firstname, req.body.lastname, req.body.email, req.body.mobile_number)
-
+		user.profile.insert_profile(req.user._id);
 		if(req.body.isUser == "true"){
 			user.insert_profile(req.user._id)
 			user.payment = new Payment(req.body.card_number, req.body.cvv, req.body.exp_date, req.body.postal_code)
