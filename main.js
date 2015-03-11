@@ -11,7 +11,6 @@ var expressSession = require('express-session');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var sessions = require('./routes/sessions')
-var agents = require('./routes/agents')
 var app = express();
 
 // view engine setup
@@ -47,11 +46,10 @@ app.use(cookieParser('njskdfjkjns72^2'))
 //Description: This part of main.js routes incoming requests to 
 //             their respective handling modules. All the modules 
 //             are stored in the "routes" folder. 
-
+app.use(express.static(__dirname + '/public'));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/sessions', sessions)
-app.use('/agents', agents)
 
 //========================404 Error Handling======================
 // catch 404 and forward to error handler

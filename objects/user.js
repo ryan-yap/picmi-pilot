@@ -5,12 +5,14 @@ var Profile = require('./profile')
 function User(username, password) {
 	this.account = new Account(username, password);
 	this.profile = null;
-	this.user_payment = null;
+	this.payment = null;
+	this.banking = null;
 }
 
 User.prototype.insert_profile = function(id) {
 	this.profile.insert(id,user_db);
 };
+
 // User.prototype.query_username = function() {
 // 	user_db.collection('account').find({username:this.account.username}).toArray(
 // 		function(err, result) {

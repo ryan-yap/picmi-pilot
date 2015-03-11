@@ -10,12 +10,7 @@ router.get('/', ensureAuthenticated, function(req, res, next) {
 
 router.post('/users', passport.authenticate('user-login'), function(req, res, next){
 	//console.log(req.user)
-	res.send('user post request to /sessions')
-});
-
-router.post('/agents', passport.authenticate('agent-login'), function(req, res, next){
-	//console.log(req.user)
-	res.send('agent post request to /sessions')
+	res.send('<br><form action="/users"><input type="submit" value="Retrieve your user information"> </form>');
 });
 
 router.delete('/', ensureAuthenticated, function(req, res, next){
