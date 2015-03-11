@@ -1,0 +1,74 @@
+<form action="http://localhost:8081/users" method="post">
+    <div>
+        <label>Username:</label>
+        <input type="text" name="username"/>
+    </div>
+    <div>
+        <label>Password:</label>
+        <input type="password" name="password"/>
+    </div>
+    <div>
+        <label>Email:</label>
+        <input type="text" name="email"/>
+    </div>
+    <div>
+        <label>Firstname:</label>
+        <input type="text" name="firstname"/>
+    </div>
+    <div>
+        <label>Lastname:</label>
+        <input type="text" name="lastname"/>
+    </div>
+    <div>
+        <label>Mobile Number:</label>
+        <input type="text" name="mobile_number"/>
+    </div>
+
+    <br><br>
+    <div>
+        <input type="checkbox" name="isUser" value="true" checked="">I want to be a PicMi user<br>
+    </div>
+    <div>
+        <label>Credit Card Number:</label>
+        <input type="text" name="card_number"/>
+    </div>
+    <div>
+        <label>CVV:</label>
+        <input type="text" name="cvv"/>
+    </div>
+    <div>
+        <label>Expiration Data:</label>
+        <input type="text" name="exp_date"/>
+    </div>
+    <div>
+        <label>Postal Code:</label>
+        <input type="text" name="postal_code"/>
+    </div>
+    <br><br>
+    <div>
+        <input type="checkbox" name="isDriver" value="true"> I want to be a PicMi Driver
+    </div>
+    <div>
+        <label>Payment Method:</label><br>
+        <input type="radio" name="payment_method" value="PayPal" checked>PayPal
+        <input type="radio" name="payment_method" value="Email">Email
+        <input type="radio" name="payment_method" value="Direct Deposit" >Direct Deposit
+    </div>  
+    <div>
+        <input type="submit" value="User Sign Up"/>
+    </div>
+</form>
+<br><br>
+<form action="http://localhost:8081/sessions/users" method="post">
+    <div>
+        <label>Username:</label>
+        <input type="text" name="username"/>
+    </div>
+    <div>
+        <label>Password:</label>
+        <input type="password" name="password"/>
+    </div>
+    <div>
+        <input type="submit" value="User Log In"/>
+    </div>
+</form>
