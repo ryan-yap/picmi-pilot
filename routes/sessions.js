@@ -3,9 +3,8 @@ var passport = require('../passports/passport.js')
 var router = express.Router();
 
 //HTTP 1.1 GET Request Handler
-router.get('/', ensureAuthenticated, function(req, res, next) {
-	console.log(req.user)
-  	res.send('respond with a sessions resource');
+router.get('/', function(req, res, next) {
+  	res.send('Test');
 });
 
 router.post('/users', passport.authenticate('user-login'), function(req, res, next){
