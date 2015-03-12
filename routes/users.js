@@ -18,7 +18,6 @@ var ObjectID = require('mongoskin').ObjectID
 		user.profile = new Profile(req.body.firstname, req.body.lastname, req.body.email, req.body.mobile_number)
 		user.insert_profile(req.user._id);
 		if(req.body.isUser == "true"){
-			user.insert_profile(req.user._id)
 			user.payment = new Payment(req.body.card_number, req.body.cvv, req.body.exp_date, req.body.postal_code)
 			user.payment.insert(req.user._id)
 		}
