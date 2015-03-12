@@ -26,7 +26,7 @@ var ObjectID = require('mongoskin').ObjectID
 			user.banking = new Banking(req.body.payment_method)
 			user.banking.insert(req.user._id)
 		}
-
+		
 		res.send('<br><form action="/users"><input type="submit" value="Retrieve your user information"> </form>');
 	});
 
