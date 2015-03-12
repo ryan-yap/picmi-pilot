@@ -5,7 +5,7 @@ var User = require('../objects/user')
 var Profile = require('../objects/profile')
 var Payment = require('../objects/payment')
 var Banking = require('../objects/banking')
-var user_db = require('mongoskin').db('mongodb://52.11.66.117:27017/User');
+var user_db = require('mongoskin').db('mongodb://54.153.62.38:27017/User');
 var ObjectID = require('mongoskin').ObjectID
 
 	/* GET users listing. */
