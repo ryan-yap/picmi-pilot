@@ -21,7 +21,6 @@
     "bcrypt-nodejs": "0.0.3",
     "connect-flash": "~0.1.1",
     "serve-static": "~1.9.1",
-    "cluster": "~0.7.7",
-    "bson": "~0.2.19"
+    "cluster": "~0.7.7"
   }
 }
