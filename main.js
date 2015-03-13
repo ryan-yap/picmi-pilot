@@ -11,6 +11,7 @@ var expressSession = require('express-session');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var sessions = require('./routes/sessions')
+var photos = require('./routes/photos')
 var app = express();
 
 // view engine setup
