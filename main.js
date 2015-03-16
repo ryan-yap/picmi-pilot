@@ -51,6 +51,7 @@ app.use(express.static(__dirname + '/public'));
 app.use('/', routes);
 app.use('/users', users);
 app.use('/sessions', sessions)
+app.use('/photos', photos)
 
 //========================404 Error Handling======================
 // catch 404 and forward to error handler
