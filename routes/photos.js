@@ -5,7 +5,7 @@ var Photo = require('../objects/photo')
 var AWS = require('aws-sdk'); 
 var ObjectID = require('mongoskin').ObjectID
 var s3 = new AWS.S3(); 
-
+var photo_db = require('mongoskin').db('mongodb://54.153.62.38:27017/Photo');
 // AWS.config.update({
 //     accessKeyId: "AKIAICVKGCDJ6XYSVS6Q",
 //     secretAccessKey: "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",
@@ -13,31 +13,55 @@ var s3 = new AWS.S3();
 // });
 
 /* GET users listing. */
-router.get('/', ensureAuthenticated, function(req, res, next) {
-	var params = {
- 	 	Bucket: 'picmi-photo', /* required */
-  		//Key: 'photo/', /* required */
-	};
-	// s3.getSignedUrl('getObject', params, function (err, url) {
- //  		console.log("error:",err)
- //  		console.log(url)
-	// });
-	s3.listObjects(params, function(err, data) {
-	  if (err) console.log(err, err.stack); // an error occurred
-	  else     console.log(data);           // successful response
-	});
+router.get('/:RID/:UID', ensureAuthenticated, function(req, res, next) {
+	if (req.params.RID != req.user._id){
+		res.send("Permission Denied");
+	}else{
+		photo_db.collection('album').find({recipient:req.params.RID, uploader: req.params.UID}).toArray(
+			function(err, result) {
+	       		res.json(result)
+			}
+		);
+	}
+});
 
-	res.send("Photo");
+router.get('/:RID', ensureAuthenticated, function(req, res, next) {
+	if (req.params.RID != req.user._id){
+		res.send("Permission Denied");
+	}else{
+		photo_db.collection('album').find({recipient:req.params.RID}).toArray(
+			function(err, result) {
+	       		res.json(result)
+			}
+		);
+	}
+});
+
+router.get('/', ensureAuthenticated, function(req, res, next) {
+	res.send('Please provide paramters')
 });
 
 router.get('/upload', ensureAuthenticated, function(req, res, next){
+	var time = Date.now()
+	var uid = req.query.UID
+	var rid = req.query.RID
+	var key = "photo/"+ rid + "/" + uid + "/" + time.toString();
+
+	var newPhoto = new Photo(key, uid, rid, time);
+
 	var html_temp = '<form action="UPLOADURL" method="post" enctype="multipart/form-data"><input type="file" name="pic" accept="image/*"><input type="submit"></form>'
-	var params = {Bucket: 'picmi-photo', Key: 'photo/', Expires: 3600, ACL: "public-read", ContentType: "image/jpeg"};
+	var params = {Bucket: 'picmi-photo', Key: key, Expires: 3600, ACL: "public-read", ContentType: "image/jpeg"};
 	s3.getSignedUrl('putObject', params, function (err, url) {
-  		console.log(err);
-  		var html = html_temp.replace("UPLOADURL", url);
-		console.log(url)
-		res.send(html)
+  		if (err) {
+  			console.log(err);
+  		}
+  		else{
+	  		var html = html_temp.replace("UPLOADURL", url);
+	  		newPhoto.insert()
+			console.log(url)
+			console.log('Now run from console for upload:\n\ncurl -v -H "Content-Type: image/jpeg" -T /home/ryan/Pictures/capbridge.jpg \'' + url + '\'');
+			res.send(html)
+		}
 	});
 })
 
