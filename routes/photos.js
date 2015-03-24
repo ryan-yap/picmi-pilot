@@ -108,7 +108,7 @@ router.get('/upload', ensureAuthenticated, function(req, res, next){
 })
 
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { 
+  if (req.user) { 
   	return next(); 
   }
   res.redirect('/');

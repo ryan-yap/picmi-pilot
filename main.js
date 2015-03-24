@@ -12,6 +12,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var sessions = require('./routes/sessions')
 var photos = require('./routes/photos')
+var locations = require('./routes/locations')
 var app = express();
 
 // view engine setup
@@ -28,13 +29,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //==============Configuration for passport.js====================
 //Cookies Setting
+var MongoStore = require('connect-mongo')(expressSession);
+
 app.use(expressSession({
   name: 'PicMi',
   secret: 'njskdfjkjns72^2',
   duration: 60 * 60 * 24 * 365 * 10,
   activeDuration: 60 * 60 * 24 * 365 *10,
   saveUninitialized : true,
-  resave: true
+  resave: true,
+  store: new MongoStore({ url: 'mongodb://54.153.62.38:27017/Session' })
   }));
 //Initializing passport
 app.use(passport.initialize());
@@ -52,6 +56,7 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/sessions', sessions)
 app.use('/photos', photos)
+app.use('/locations', locations)
 
 //========================404 Error Handling======================
 // catch 404 and forward to error handler
