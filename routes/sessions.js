@@ -28,7 +28,8 @@ router.delete('/', ensureAuthenticated, function(req, res, next){
 
 function ensureAuthenticated(req, res, next) {
   if (req.user) { return next(); }
-  res.redirect('/');
+  var json = new JsonResponse(req.user, "session", "www.picmiapp.com/sessions/users", "post", req.user._id, null);
+  res.json(json);
 }
 
 module.exports = router

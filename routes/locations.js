@@ -6,8 +6,10 @@ var redis = require('redis'),
 
 var proximity = require('geo-proximity').initialize(client)
 
+//TODO: On request, check for the closest person and send a push notification to the person. 
+//      Write a confirmation to the user. 
 router.get('/', ensureAuthenticated, function(req, res, next) {
-	proximity.addLocation(43.6667, -79.4167, req.user._id, function(err, reply){
+	proximity.addLocation(4.6667, -79.4167, req.user._id, function(err, reply){
   		if(err) console.error(err)
   		else res.send('added location:'+ reply)
 	})

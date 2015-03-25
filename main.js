@@ -58,6 +58,11 @@ app.use('/sessions', sessions)
 app.use('/photos', photos)
 app.use('/locations', locations)
 
+
+//========================Socket.io Handling======================
+//
+//
+//
 //========================404 Error Handling======================
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
