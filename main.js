@@ -1,4 +1,5 @@
-var express = require('express');
+var express = require('express')
+var cors = require('cors');
 var path = require('path');
 var favicon = require('serve-favicon');
 
@@ -14,7 +15,7 @@ var sessions = require('./routes/sessions')
 var photos = require('./routes/photos')
 var locations = require('./routes/locations')
 var app = express();
-
+app.use(cors());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

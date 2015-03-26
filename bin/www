@@ -4,10 +4,6 @@
  * Module dependencies.
  */
 var cluster = require('cluster');
-var redis = require('redis'),
-    client = redis.createClient()
-
-var proximity = require('geo-proximity').initialize(client)
 
 if (cluster.isMaster) {
 
@@ -38,29 +34,6 @@ if (cluster.isMaster) {
    */
 
   var server = http.createServer(app);
-  var io = require("socket.io").listen(http)
-  /* 
-    The list of participants in our chatroom.
-    The format of each participant will be:
-    {
-      uid: "user._id",
-      longitude: <longitude coordinate>,
-      latitude: <latitude coordinate>
-    }
-  */
-  io.on("connection", function(socket){
-    /*
-      When a user changes his name, we are expecting an event called "nameChange" 
-      and then we'll emit an event called "nameChanged" to all participants with
-      the id and new name of the user who emitted the original message
-    */
-    socket.on("ping", function(data) {
-      proximity.addLocation(data.latitude, data.longitude, data.uid, function(err, reply){
-        if(err) console.error(err)
-        else console.log(data.uid + "is at:"+ "lat(" + data.latitude + ") long("+data.longitude + ")")
-      })
-    });
-  });
   /**
    * Listen on provided port, on all network interfaces.
    */
