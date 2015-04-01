@@ -30,8 +30,10 @@ router.get('/neighbors', ensureAuthenticated, function(req, res, next) {
             } 
           };
         }else{
-          var obj = {uid :locations[0][0], longitude:locations[0][2] , latitude: locations[0][1]}
-          result.push(obj) 
+            if (locations[0][0] != uid){
+              var obj = {uid :locations[0][0], longitude:locations[0][2] , latitude: locations[0][1]}
+              result.push(obj) 
+            }
         }
         console.log("reuslt",result)
         var json = new JsonResponse(result, "location", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
@@ -67,8 +69,10 @@ router.get('/neighbor', ensureAuthenticated, function(req, res, next) {
             } 
           };
         }else{
-          var obj = {longitude:locations[0][2] , latitude: locations[0][1]}
-          result[(locations[0][0])] =  obj
+            if (locations[0][0] != uid){
+              var obj = {longitude:locations[0][2] , latitude: locations[0][1]}
+              result[(locations[0][0])] =  obj
+            }
         }
         console.log("result", result)
         var closest = geolib.findNearest(target_location, result, 0)
