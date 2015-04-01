@@ -14,6 +14,7 @@ router.get('/', ensureAuthenticated, function(req, res, next) {
 router.post('/', passport.authenticate('user-login'), function(req, res, next){
 
 	var user = new User(req.user.username, req.user.password)
+	console.log(req.body.device_token)
 	if (req.body.device_token){
 		var device_token = new Device_Token(req.body.device_token)
 		device_token.insert(req.user._id)
