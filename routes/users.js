@@ -11,7 +11,7 @@ var ObjectID = require('mongoskin').ObjectID
 
 // Getting the user's information
 router.get('/', ensureAuthenticated, get_user, function(req, res, next) {
-	var json = new JsonResponse(req.user_info, "user", "www.picmiapp.com/users", "get", req.user._id, null)
+	var json = new JsonResponse(req.user_info, "user", "www.picmiapp.com/users", req.method, req.user._id, null)
 	res.json(json);
 });
 
@@ -29,7 +29,7 @@ router.post('/', passport.authenticate('user-signup'), function(req, res, next){
 		user.banking = new Banking(req.body.payment_method)
 		user.banking.insert(req.user._id)
 	}
-	var json = new JsonResponse(user, "user", "www.picmiapp.com/users", "post", req.user._id, null)
+	var json = new JsonResponse(user, "user", "www.picmiapp.com/users", req.method, req.user._id, null)
 	res.json(json);
 });
 

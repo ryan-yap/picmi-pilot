@@ -5,7 +5,7 @@ var redis = require('redis'),
     client = redis.createClient(6379, '54.67.18.228', {})
 var geolib = require('geolib')
 var JsonResponse = require('../objects/jsonresponse')
-
+var apn = require('apn');
 var proximity = require('geo-proximity').initialize(client)
 
 //TODO: On request, check for the closest person and send a push notification to the person. 
@@ -13,8 +13,9 @@ var proximity = require('geo-proximity').initialize(client)
 router.get('/neighbors', ensureAuthenticated, function(req, res, next) {
   var longitude = req.query.longitude
   var latitude = req.query.latitude
+  var range = req.query.range
   var uid = req.user._id
-  proximity.nearby(parseFloat(latitude), parseFloat(longitude), 2000, {values : true}, function(err, locations){
+  proximity.nearby(parseFloat(latitude), parseFloat(longitude), range, {values : true}, function(err, locations){
     if(err) console.error(err)
     else {
       if (locations){
@@ -33,11 +34,11 @@ router.get('/neighbors', ensureAuthenticated, function(req, res, next) {
           result.push(obj) 
         }
         console.log("reuslt",result)
-        var json = new JsonResponse(result, "location", "www.picmiapp.com" + req.originalUrl, "get", req.user._id, null)
+        var json = new JsonResponse(result, "location", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
         //console.log(json)
         res.json(json)
       }else{
-        var json = new JsonResponse(null, "location", "www.picmiapp.com" + req.originalUrl, "get", req.user._id, "No neighbor found")
+        var json = new JsonResponse(null, "location", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, "No neighbor found")
         res.json(json)
       }
     }
@@ -47,8 +48,9 @@ router.get('/neighbors', ensureAuthenticated, function(req, res, next) {
 router.get('/neighbor', ensureAuthenticated, function(req, res, next) {
   var longitude = req.query.longitude
   var latitude = req.query.latitude
+  var range = req.query.range
   var uid = req.user._id
-  proximity.nearby(parseFloat(latitude), parseFloat(longitude), 2000, {values : true}, function(err, locations){
+  proximity.nearby(parseFloat(latitude), parseFloat(longitude), range, {values : true}, function(err, locations){
     if(err) console.error(err)
     else {
       if (locations){
@@ -71,11 +73,11 @@ router.get('/neighbor', ensureAuthenticated, function(req, res, next) {
         console.log("result", result)
         var closest = geolib.findNearest(target_location, result, 0)
         console.log("closest", closest)
-        var json = new JsonResponse(closest, "location", "www.picmiapp.com" + req.originalUrl, "get", req.user._id, null)
+        var json = new JsonResponse(closest, "location", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
         res.json(json)
         //console.log(closest)
       }else{
-        var json = new JsonResponse(null, "location", "www.picmiapp.com" + req.originalUrl, "get", req.user._id, "No neighbor found")
+        var json = new JsonResponse(null, "location", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, "No neighbor found")
         res.json(json)
       }
     }

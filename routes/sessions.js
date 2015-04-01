@@ -5,13 +5,13 @@ var router = express.Router();
 
 // Return a logged in user's object to the client
 router.get('/', ensureAuthenticated, function(req, res, next) {
-  	var json = new JsonResponse(req.user, "session", "www.picmiapp.com/sessions/users", "post", req.user._id, null)
+  	var json = new JsonResponse(req.user, "session", "www.picmiapp.com"  + req.originalUrl, req.method, req.user._id, null)
 	res.json(json);
 });
 
 // Create a logging in user object and returnt the logged in user object to the client.
 router.post('/', passport.authenticate('user-login'), function(req, res, next){
-	var json = new JsonResponse(req.user, "session", "www.picmiapp.com/sessions/users", "post", req.user._id, null)
+	var json = new JsonResponse(req.user, "session", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 	res.json(json);
 });
 
@@ -28,7 +28,7 @@ router.delete('/', ensureAuthenticated, function(req, res, next){
 
 function ensureAuthenticated(req, res, next) {
   if (req.user) { return next(); }
-  var json = new JsonResponse(req.user, "session", "www.picmiapp.com/sessions/users", "post", req.user._id, null);
+  var json = new JsonResponse(req.user, "session", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null);
   res.json(json);
 }
 

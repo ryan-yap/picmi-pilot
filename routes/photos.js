@@ -50,14 +50,14 @@ router.get('/', ensureAuthenticated, function(req, res, next) {
 
 	if (rid != req.user._id){
 		// Return a error message in json format
-		var json = new JsonResponse(null, "photo", "www.picmiapp.com" + req.originalUrl, "get", req.user._id, "Access Denied")
+		var json = new JsonResponse(null, "photo", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, "Access Denied")
 	    res.json(json)
 	    return
 	}else{
 		if (uid){
 			photo_db.collection('album').find({recipient:rid, uploader: uid}).toArray(
 				function(err, result) {
-					var json = new JsonResponse(result, "photo", "www.picmiapp.com" + req.originalUrl, "get", req.user._id, null)
+					var json = new JsonResponse(result, "photo", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 		       		res.json(json)
 		       		return
 		       	}
@@ -65,7 +65,7 @@ router.get('/', ensureAuthenticated, function(req, res, next) {
 		}else{
 			photo_db.collection('album').find({recipient:rid}).toArray(
 				function(err, result) {
-					var json = new JsonResponse(result, "photo", "www.picmiapp.com" + req.originalUrl, "get", req.user._id, null)
+					var json = new JsonResponse(result, "photo", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 		       		res.json(json)
 		       		return
 				}
@@ -81,7 +81,7 @@ router.get('/', ensureAuthenticated, function(req, res, next) {
 router.get('/upload', ensureAuthenticated, function(req, res, next){
 
 	if (req.query.RID == req.user._id){
-		var json = new JsonResponse(null, "photo", "www.picmiapp.com" + req.originalUrl, "get", req.user._id, "Access Denied")
+		var json = new JsonResponse(null, "photo", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, "Access Denied")
 	    res.json(json)
 	    return
 	}else{
@@ -100,7 +100,7 @@ router.get('/upload', ensureAuthenticated, function(req, res, next){
 	  		else{
 		  		newPhoto.insert()
 				console.log(url)
-				var json = new JsonResponse({upload_url : url}, "photo", "www.picmiapp.com" + req.originalUrl, "get", req.user._id, null)
+				var json = new JsonResponse({upload_url : url}, "photo", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 		       	res.json(json)
 			}
 		});
