@@ -5,6 +5,7 @@ var User = require('../objects/user')
 var Profile = require('../objects/profile')
 var Payment = require('../objects/payment')
 var Banking = require('../objects/banking')
+var Device_Token = require('../objects/device_token')
 var JsonResponse = require('../objects/jsonresponse')
 var user_db = require('mongoskin').db('mongodb://54.153.62.38:27017/User');
 var ObjectID = require('mongoskin').ObjectID
@@ -18,6 +19,10 @@ router.get('/', ensureAuthenticated, get_user, function(req, res, next) {
 // Creating a new user
 router.post('/', passport.authenticate('user-signup'), function(req, res, next){
 	var user = new User(req.user.username, req.user.password)
+	if (req.body.device_token){
+		user.device_token = new Device_Token(req.body.device_token)
+		user.device_token.insert(req.user._id)
+	}
 	user.profile = new Profile(req.body.firstname, req.body.lastname, req.body.email, req.body.mobile_number)
 	user.insert_profile(req.user._id);
 	if(req.body.isUser == "true"){

@@ -7,6 +7,7 @@ function User(username, password) {
 	this.profile = null;
 	this.payment = null;
 	this.banking = null;
+	this.device_token = null;
 }
 
 User.prototype.insert_profile = function(id) {

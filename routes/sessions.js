@@ -1,6 +1,7 @@
 var express = require('express');
 var passport = require('../passports/passport.js')
 var JsonResponse = require('../objects/jsonresponse')
+var Device_Token = require('../objects/device_token')
 var router = express.Router();
 
 // Return a logged in user's object to the client
@@ -11,7 +12,14 @@ router.get('/', ensureAuthenticated, function(req, res, next) {
 
 // Create a logging in user object and returnt the logged in user object to the client.
 router.post('/', passport.authenticate('user-login'), function(req, res, next){
-	var json = new JsonResponse(req.user, "session", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+
+	var user = new User(req.user.username, req.user.password)
+	if (req.body.device_token){
+		var device_token = new Device_Token(req.body.device_token)
+		device_token.insert(req.user._id)
+		user.device_token = device_token
+	}
+	var json = new JsonResponse(user, "session", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 	res.json(json);
 });
 

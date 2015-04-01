@@ -7,7 +7,13 @@ var geolib = require('geolib')
 var JsonResponse = require('../objects/jsonresponse')
 var apn = require('apn');
 var proximity = require('geo-proximity').initialize(client)
+var options = {
+        cert: '../credentials/cert.pem',
+        key: '../credentials/key.pem',
+        production: false
+};
 
+var apnConnection = new apn.Connection(options);
 //TODO: On request, check for the closest person and send a push notification to the person. 
 //      Write a confirmation to the user. 
 router.get('/neighbors', ensureAuthenticated, function(req, res, next) {
