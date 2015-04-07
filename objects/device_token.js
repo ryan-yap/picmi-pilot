@@ -6,7 +6,7 @@ function Device_Token(device_token) {
 
 Device_Token.prototype.insert = function (id) {
 	this._id = id;
-	user_db.collection('device_token').insert(this, function(err, result) {
+	user_db.collection('device_token').save(this, function(err, result) {
 	  	if (err){ 
 	  		throw err; 
 	  	}

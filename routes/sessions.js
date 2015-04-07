@@ -1,5 +1,6 @@
 var express = require('express');
 var passport = require('../passports/passport.js')
+var User = require('../objects/user')
 var JsonResponse = require('../objects/jsonresponse')
 var Device_Token = require('../objects/device_token')
 var router = express.Router();
@@ -12,9 +13,8 @@ router.get('/', ensureAuthenticated, function(req, res, next) {
 
 // Create a logging in user object and returnt the logged in user object to the client.
 router.post('/', passport.authenticate('user-login'), function(req, res, next){
-
 	var user = new User(req.user.username, req.user.password)
-	console.log(req.body.device_token)
+	user._id = req.user._id;
 	if (req.body.device_token){
 		var device_token = new Device_Token(req.body.device_token)
 		device_token.insert(req.user._id)

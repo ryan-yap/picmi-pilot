@@ -4,6 +4,7 @@ var Profile = require('./profile')
 
 function User(username, password) {
 	this.account = new Account(username, password);
+	this._id = null;
 	this.profile = null;
 	this.payment = null;
 	this.banking = null;

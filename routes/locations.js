@@ -5,15 +5,11 @@ var redis = require('redis'),
     client = redis.createClient(6379, '54.67.18.228', {})
 var geolib = require('geolib')
 var JsonResponse = require('../objects/jsonresponse')
-var apn = require('apn');
-var proximity = require('geo-proximity').initialize(client)
-var options = {
-        cert: '../credentials/cert.pem',
-        key: '../credentials/key.pem',
-        production: false
-};
+var user_db = require('mongoskin').db('mongodb://54.153.62.38:27017/User');
+var ObjectID = require('mongoskin').ObjectID
 
-var apnConnection = new apn.Connection(options);
+var proximity = require('geo-proximity').initialize(client)
+
 //TODO: On request, check for the closest person and send a push notification to the person. 
 //      Write a confirmation to the user. 
 router.get('/neighbors', ensureAuthenticated, function(req, res, next) {
@@ -41,7 +37,7 @@ router.get('/neighbors', ensureAuthenticated, function(req, res, next) {
               result.push(obj) 
             }
         }
-        console.log("reuslt",result)
+        console.log("result",result)
         var json = new JsonResponse(result, "location", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
         //console.log(json)
         res.json(json)
@@ -58,6 +54,7 @@ router.get('/neighbor', ensureAuthenticated, function(req, res, next) {
   var latitude = req.query.latitude
   var range = req.query.range
   var uid = req.user._id
+  console.log("directory:" + __dirname)
   proximity.nearby(parseFloat(latitude), parseFloat(longitude), range, {values : true}, function(err, locations){
     if(err) console.error(err)
     else {
@@ -83,6 +80,7 @@ router.get('/neighbor', ensureAuthenticated, function(req, res, next) {
         console.log("result", result)
         var closest = geolib.findNearest(target_location, result, 0)
         console.log("closest", closest)
+        //TODO: Get the UID from here and send a puch notification!!
         var json = new JsonResponse(closest, "location", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
         res.json(json)
         //console.log(closest)
