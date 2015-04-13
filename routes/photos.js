@@ -7,11 +7,11 @@ var JsonResponse = require('../objects/jsonresponse')
 var ObjectID = require('mongoskin').ObjectID
 var s3 = new AWS.S3(); 
 var photo_db = require('mongoskin').db('mongodb://54.153.62.38:27017/Photo');
-// AWS.config.update({
-//     accessKeyId: "AKIAICVKGCDJ6XYSVS6Q",
-//     secretAccessKey: "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",
-//     //"region": "us-west-1"
-// });
+AWS.config.update({
+    accessKeyId: "AKIAICVKGCDJ6XYSVS6Q",
+    secretAccessKey: "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",
+    //"region": "us-west-1"
+});
 
 //TODO: Need to check if UID is a valid userid by checking the RID with user_db.
 //The RID must match with the UID of the user who is making the request. This request returns the client a list of photo owned by the recipient.
