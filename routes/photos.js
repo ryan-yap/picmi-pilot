@@ -7,7 +7,7 @@ var JsonResponse = require('../objects/jsonresponse')
 var ObjectID = require('mongoskin').ObjectID
 var s3 = new AWS.S3(); 
 var photo_db = require('mongoskin').db('mongodb://54.153.62.38:27017/Photo');
-AWS.config.update({
+// AWS.config.update({
 //     accessKeyId: "AKIAICVKGCDJ6XYSVS6Q",
 //     secretAccessKey: "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",
 //     //"region": "us-west-1"
