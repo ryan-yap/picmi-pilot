@@ -7,7 +7,7 @@ var JsonResponse = require('../objects/jsonresponse')
 var ObjectID = require('mongoskin').ObjectID
 var s3 = new AWS.S3(); 
 var photo_db = require('mongoskin').db('mongodb://54.153.62.38:27017/Photo');
-// AWS.config.update({
+AWS.config.update({
 //     accessKeyId: "AKIAICVKGCDJ6XYSVS6Q",
 //     secretAccessKey: "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",
 //     //"region": "us-west-1"
@@ -100,7 +100,7 @@ router.get('/upload', ensureAuthenticated, function(req, res, next){
 	  		else{
 		  		newPhoto.insert()
 				console.log(url)
-				var json = new JsonResponse({upload_url : url}, "photo", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+				var json = new JsonResponse({upload_url : url, timestamp : time.toString()}, "photo", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 		       	res.json(json)
 			}
 		});
