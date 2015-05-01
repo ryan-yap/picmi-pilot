@@ -66,6 +66,7 @@ router.get('/profile', ensureAuthenticated, function(req, res, next){
 // Creating a new user
 router.post('/', passport.authenticate('user-signup'), function(req, res, next){
 	var user = new User(req.user.username, req.user.password)
+	user._id = req.user._id
 	if (req.body.device_token){
 		user.device_token = new Device_Token(req.body.device_token)
 		user.device_token.insert(req.user._id)
