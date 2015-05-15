@@ -15,6 +15,7 @@ var sessions = require('./routes/sessions')
 var photos = require('./routes/photos')
 var locations = require('./routes/locations')
 var videos = require('./routes/videos')
+var streams = require('./routes/streams')
 var app = express();
 app.use(cors());
 // view engine setup
@@ -60,6 +61,7 @@ app.use('/sessions', sessions)
 app.use('/photos', photos)
 app.use('/locations', locations)
 app.use('/videos', videos)
+app.use('/streams', streams)
 
 
 //========================Socket.io Handling======================

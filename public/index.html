@@ -59,7 +59,7 @@
     </div>
 </form>
 <br><br>
-<form action="http://picmi-dev.elasticbeanstalk.com/sessions" method="post">
+<form action="http://localhost:8081/sessions" method="post">
     <div>
         <label>Username:</label>
         <input type="text" name="email"/>
@@ -70,5 +70,16 @@
     </div>
     <div>
         <input type="submit" value="User Log In"/>
+    </div>
+</form>
+<br><br>
+<label>Create Stream:</label><br>
+<form action="http://localhost:8081/streams" method="post">
+    <div>
+        <label>user_id:</label>
+        <input type="text" name="user_id"/>
+    </div>
+    <div>
+        <input type="submit" value="Create Stream"/>
     </div>
 </form>
