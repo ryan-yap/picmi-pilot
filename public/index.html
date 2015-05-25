@@ -83,3 +83,21 @@
         <input type="submit" value="Create Stream"/>
     </div>
 </form>
+
+
+
+<label>Report Bug:</label><br>
+<form action="http://localhost:8081/reports" method="post" id="bugform">
+ <label> Category: </label>
+
+ <div>
+  <input type="text" name="category">
+</div>
+
+<label> Message: </label>
+<div>
+  <textarea name="message" form="bugform"></textarea>
+</div>
+  <input type="submit" value="Report Bug">
+</form>
+

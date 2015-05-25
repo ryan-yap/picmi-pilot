@@ -13,6 +13,7 @@ var ObjectID = require('mongoskin').ObjectID
 // Getting the user's information
 router.get('/', ensureAuthenticated, function(req, res, next) {
 	var uid = req.query.uid
+	console.log("asd", "+++",req)
 	if (uid){
 		user_db.collection('account').find({_id:ObjectID(uid)}).toArray(
 			function(err, result) {
