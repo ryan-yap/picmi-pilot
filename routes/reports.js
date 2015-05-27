@@ -14,7 +14,8 @@ router.post('/', ensureAuthenticated, function(req, res, next){
 	var user_id = req.user._id
 	var message = req.body.message
 	var category = req.body.category
-	var report = new Report(user_id, message, category)
+	var rate = req.body.rate
+	var report = new Report(user_id, message, category, rate)
 	report_db.collection('bugs').insert(report, function(err, result) {
 	  	if (err){ 
 	  		throw err; 

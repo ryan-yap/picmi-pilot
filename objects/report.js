@@ -1,9 +1,10 @@
 var report_db = require('mongoskin').db('mongodb://54.153.62.38:27017/Report');
 
-function Report(user_id, message, category) {
+function Report(user_id, message, category, rate) {
 	this.user_id = user_id;
 	this.message = message;
-	this.category = category
+	this.category = category;
+	this.rate = rate;
 }
 
 Report.prototype.insert = function () {
