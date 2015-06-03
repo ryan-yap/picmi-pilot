@@ -105,3 +105,17 @@
   <input type="submit" value="Report Bug">
 </form>
 
+<label>Push Notification:</label><br>
+<form action="http://localhost:8081/notifications" method="post">
+    <div>
+        <label>target_id:</label>
+        <input type="text" name="target_id"/>
+    </div>
+    <div>
+        <label>message:</label>
+        <input type="text" name="message"/>
+    </div>
+    <div>
+        <input type="submit" value="Send Notification"/>
+    </div>
+</form>

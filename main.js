@@ -17,6 +17,7 @@ var locations = require('./routes/locations')
 var videos = require('./routes/videos')
 var streams = require('./routes/streams')
 var reports = require('./routes/reports')
+var notifications = require('./routes/notifications')
 
 var app = express();
 app.use(cors());
@@ -65,7 +66,7 @@ app.use('/locations', locations)
 app.use('/videos', videos)
 app.use('/streams', streams)
 app.use('/reports', reports)
-
+app.use('/notifications', notifications)
 
 //========================Socket.io Handling======================
 //
