@@ -1,7 +1,7 @@
 function Profile(firstname, lastname, email, mobile_number) {
 	this.firstname = firstname;
 	this.lastname = lastname;
-	this.email = email;
+	this.email = email.toLowerCase();
 	this.mobile_number = mobile_number;
 	this._id = null;
 }

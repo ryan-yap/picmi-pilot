@@ -27,14 +27,15 @@ passport.use('user-login', new LocalStrategy({
 },
 function(req, username, password, done) { 
     // check in mongo if a user with username exists or not
-    user_db.collection('account').find({username:username}).toArray( 
+    var username_in_lower_case = username.toLowerCase()
+    user_db.collection('account').find({username:username_in_lower_case}).toArray( 
     	function(err, result) {
         // In case of any error, return using the done method
         if (err)
         	return done(err);
         // Username does not exist, log error & redirect back
         if (!result[0]){
-        	console.log('User Not Found with username '+ username);
+        	console.log('User Not Found with username '+ username_in_lower_case);
         	return done(null, false);                 
         }
         // User exists but wrong password, log the error 
@@ -54,7 +55,8 @@ passport.use('user-signup', new LocalStrategy({
 },
 function(req, username, password, done) {
       // find a user in Mongo with provided username
-      user_db.collection('account').find({username:username}).toArray(
+      var username_in_lower_case = username.toLowerCase();
+      user_db.collection('account').find({username:username_in_lower_case}).toArray(
       	function(err, result) {
 	        // In case of any error return
 	        if (err){
@@ -68,7 +70,7 @@ function(req, username, password, done) {
 	        } else {
 	          // if there is no user with that email
 	          // create the user
-	          var newUser = new User(username, password);
+	          var newUser = new User(username_in_lower_case, password);
 	          user_db.collection('account').insert(newUser.account, function(err, result) {
 	          	if (err){ 
 	          		throw err; 

@@ -57,7 +57,7 @@ router.post('/driver', ensureAuthenticated, function(req, res, next){
 
 router.post('/user', ensureAuthenticated, function(req, res, next){
 	var jsonObject = req.body
-	var alert = "Photo Request"
+	var alert = "Photo Response"
 	var uid = jsonObject.requester_id
 	console.log(jsonObject)
 	push_notification(uid, alert, jsonObject)
