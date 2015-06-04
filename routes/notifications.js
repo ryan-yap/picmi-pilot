@@ -66,6 +66,111 @@ router.post('/driver', ensureAuthenticated, function(req, res, next){
 	res.json(json);
 });
 
+router.post('/user', ensureAuthenticated, function(req, res, next){
+	var jsonObject = req.body
+	var alert = "Photo Request"
+	var uid = jsonObject.requester_id
+	console.log(jsonObject)
+	var note = new apn.notification();
+	var tokens = []
+	user_db.collection('device_token').find({_id:ObjectID(uid)}).toArray(
+		function(err, result) {
+			console.log (result[0].token)
+			tokens.push(result[0].token)
+    		note.setAlertText(alert);
+    		note.badge = 1;
+    		note.payload = jsonObject
+    		service.pushNotification(note, tokens);
+	});
+
+	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+	res.json(json);
+});
+
+router.post('/driver/accept', ensureAuthenticated, function(req, res, next){
+	var jsonObject = req.body
+	var alert = "Request Accepted"
+	var uid = jsonObject.requester_id
+	console.log(jsonObject)
+	var note = new apn.notification();
+	var tokens = []
+	user_db.collection('device_token').find({_id:ObjectID(uid)}).toArray(
+		function(err, result) {
+			console.log (result[0].token)
+			tokens.push(result[0].token)
+    		note.setAlertText(alert);
+    		note.badge = 1;
+    		note.payload = jsonObject
+    		service.pushNotification(note, tokens);
+	});
+
+	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+	res.json(json);
+});
+
+router.post('/driver/decline', ensureAuthenticated, function(req, res, next){
+	var jsonObject = req.body
+	var alert = "Request Declined"
+	var uid = jsonObject.requester_id
+	console.log(jsonObject)
+	var note = new apn.notification();
+	var tokens = []
+	user_db.collection('device_token').find({_id:ObjectID(uid)}).toArray(
+		function(err, result) {
+			console.log (result[0].token)
+			tokens.push(result[0].token)
+    		note.setAlertText(alert);
+    		note.badge = 1;
+    		note.payload = jsonObject
+    		service.pushNotification(note, tokens);
+	});
+
+	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+	res.json(json);
+});
+
+router.post('/user/cancel', ensureAuthenticated, function(req, res, next){
+	var jsonObject = req.body
+	var alert = "Job Cancelled"
+	var uid = jsonObject.key
+	console.log(jsonObject)
+	var note = new apn.notification();
+	var tokens = []
+	user_db.collection('device_token').find({_id:ObjectID(uid)}).toArray(
+		function(err, result) {
+			console.log (result[0].token)
+			tokens.push(result[0].token)
+    		note.setAlertText(alert);
+    		note.badge = 1;
+    		note.payload = jsonObject
+    		service.pushNotification(note, tokens);
+	});
+
+	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+	res.json(json);
+});
+
+router.post('/user/end', ensureAuthenticated, function(req, res, next){
+	var jsonObject = req.body
+	var alert = "Transaction Ended"
+	var uid = jsonObject.requester_id
+	console.log(jsonObject)
+	var note = new apn.notification();
+	var tokens = []
+	user_db.collection('device_token').find({_id:ObjectID(uid)}).toArray(
+		function(err, result) {
+			console.log (result[0].token)
+			tokens.push(result[0].token)
+    		note.setAlertText(alert);
+    		note.badge = 1;
+    		note.payload = jsonObject
+    		service.pushNotification(note, tokens);
+	});
+
+	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+	res.json(json);
+});
+
 function ensureAuthenticated(req, res, next) {
 	if (req.user) { 
 		return next(); 
