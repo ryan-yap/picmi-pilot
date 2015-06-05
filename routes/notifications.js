@@ -124,6 +124,7 @@ function push_notification(uid, alert, jsonObject){
 			tokens.push(result[0].token)
     		note.setAlertText(alert);
     		note.badge = 1;
+    		note.contentAvailable = true
     		note.payload = jsonObject
     		service.pushNotification(note, tokens);
 	});
