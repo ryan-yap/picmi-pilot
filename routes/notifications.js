@@ -12,14 +12,14 @@ var service = new apn.connection({
     key: __dirname + "/credentials/key.pem",
     production: false,
     passphrase: null,   
-    gateway: "gateway.sandbox.push.apple.com",              
+    gateway: "gateway.push.apple.com",              
     port: 2195,                         
     enhanced: true,                     
     errorCallback: undefined,                       
     cacheLength: 5
 });
 
-/*router.get('/', function(req, res, next) {
+router.get('/', function(req, res, next) {
 	var token = req.query.token
 	dir = fs.readdirSync(__dirname + "/credentials")
 	console.log(__dirname + "/credentials")
@@ -38,12 +38,13 @@ var service = new apn.connection({
     note.setAlertText("Hello, from node-apn!");
     note.badge = 3;
     note.sound = "ping.aiff";
+    note.contentAvailable = true
     note.payload = json_obj
     service.pushNotification(note, tokens);
     
 	var json = new JsonResponse(json_obj, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 	res.json(json);
-});*/
+});
 
 router.post('/driver', ensureAuthenticated, function(req, res, next){
 	var jsonObject = req.body
