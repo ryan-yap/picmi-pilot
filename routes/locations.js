@@ -89,7 +89,7 @@ router.get('/neighbor', ensureAuthenticated, function(req, res, next) {
               delete result[e_uids[i]]
             }
           }
-
+          var keys = Object.keys(result);
           console.log("result", result)
           var closest = geolib.findNearest(target_location, result, 0)
           console.log("closest", closest)
