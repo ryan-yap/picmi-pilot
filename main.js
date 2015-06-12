@@ -44,7 +44,7 @@ app.use(expressSession({
   activeDuration: 60 * 60 * 24 * 365 *10,
   saveUninitialized : true,
   resave: true,
-  store: new MongoStore({ url: 'mongodb://54.153.62.38:27017/Session' })
+  store: new MongoStore({ url: 'mongodb://52.8.188.79:27017/Session' })
   }));
 //Initializing passport
 app.use(passport.initialize());
