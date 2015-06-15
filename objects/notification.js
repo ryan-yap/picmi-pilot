@@ -7,12 +7,12 @@ function Notification(noti_type, recipient_id, obj, notified) {
 	this.notified = notified
 }
 
-Notification.prototype.insert = function () {
+Notification.prototype.insert = function (callback) {
 	noti_db.collection('notification').insert(this, function(err, result) {
 	  	if (err){ 
 	  		throw err; 
 	  	}
-	  	console.log(result[0])
+	  	callback(result[0])
 	});
 }
 

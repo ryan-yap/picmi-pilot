@@ -55,14 +55,7 @@ router.post('/driver', ensureAuthenticated, function(req, res, next){
 	console.log(jsonObject)
 
 	var noti = new Notification(alert,uid,jsonObject, false)
-	//noti.insert()
-	noti_db.collection('notification').insert(this, function(err, noti_result) {
-		if (err){ 
-			throw err; 
-		}
-		push_notification(noti_result[0])
-	});
-
+	noti.insert(push_notification)
 	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 	res.json(json);
 });
@@ -72,14 +65,7 @@ router.post('/user', ensureAuthenticated, function(req, res, next){
 	var alert = "Photo Response"
 	var uid = jsonObject.requester_id
 	console.log(jsonObject)
-	var noti = new Notification(alert,uid,jsonObject, false)
-	//noti.insert()
-	noti_db.collection('notification').insert(this, function(err, noti_result) {
-		if (err){ 
-			throw err; 
-		}
-		push_notification(noti_result[0])
-	});
+	push_notification(uid, alert, jsonObject)
 	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 	res.json(json);
 });
@@ -89,14 +75,7 @@ router.post('/driver/accept', ensureAuthenticated, function(req, res, next){
 	var alert = "Request Accepted"
 	var uid = jsonObject.requester_id
 	console.log(jsonObject)
-	var noti = new Notification(alert,uid,jsonObject, false)
-	//noti.insert()
-	noti_db.collection('notification').insert(this, function(err, noti_result) {
-		if (err){ 
-			throw err; 
-		}
-		push_notification(noti_result[0])
-	});
+	push_notification(uid, alert, jsonObject)
 	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 	res.json(json);
 });
@@ -106,14 +85,7 @@ router.post('/driver/decline', ensureAuthenticated, function(req, res, next){
 	var alert = "Request Declined"
 	var uid = jsonObject.requester_id
 	console.log(jsonObject)
-	var noti = new Notification(alert,uid,jsonObject, false)
-	//noti.insert()
-	noti_db.collection('notification').insert(this, function(err, noti_result) {
-		if (err){ 
-			throw err; 
-		}
-		push_notification(noti_result[0])
-	});
+	push_notification(uid, alert, jsonObject)
 	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 	res.json(json);
 });
@@ -123,14 +95,7 @@ router.post('/user/cancel', ensureAuthenticated, function(req, res, next){
 	var alert = "Job Cancelled"
 	var uid = jsonObject.key
 	console.log(jsonObject)
-	var noti = new Notification(alert,uid,jsonObject, false)
-	//noti.insert()
-	noti_db.collection('notification').insert(this, function(err, noti_result) {
-		if (err){ 
-			throw err; 
-		}
-		push_notification(noti_result[0])
-	});
+	push_notification(uid, alert, jsonObject)
 	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 	res.json(json);
 });
@@ -140,14 +105,7 @@ router.post('/user/end', ensureAuthenticated, function(req, res, next){
 	var alert = "Transaction Ended"
 	var uid = jsonObject.requester_id
 	console.log(jsonObject)
-	var noti = new Notification(alert,uid,jsonObject, false)
-	//noti.insert()
-	noti_db.collection('notification').insert(this, function(err, noti_result) {
-		if (err){ 
-			throw err; 
-		}
-		push_notification(noti_result[0])
-	});
+	push_notification(uid, alert, jsonObject)
 	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 	res.json(json);
 });
@@ -157,14 +115,7 @@ router.post('/user/stream/start', ensureAuthenticated, function(req, res, next){
 	var alert = "Stream Request"
 	var uid = jsonObject.requester_id
 	console.log(jsonObject)
-	var noti = new Notification(alert,uid,jsonObject, false)
-	//noti.insert()
-	noti_db.collection('notification').insert(this, function(err, noti_result) {
-		if (err){ 
-			throw err; 
-		}
-		push_notification(noti_result[0])
-	});
+	push_notification(uid, alert, jsonObject)
 	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 	res.json(json);
 });
@@ -221,11 +172,11 @@ router.get('/sample', ensureAuthenticated, function(req, res, next){
 function push_notification(noti){
 	var note = new apn.notification();
 	var tokens = []
-	user_db.collection('device_token').find({_id:ObjectID(noti.recipient_id)}).toArray(
+	user_db.collection('device_token').find({_id:ObjectID(uid)}).toArray(
 		function(err, result) {
 			console.log (result[0].token)
 			tokens.push(result[0].token)
-			note.setAlertText(noti.noti_type);
+			note.setAlertText(noti.alert);
 			note.badge = 1;
 			note.contentAvailable = true;
 			note.payload = noti;
