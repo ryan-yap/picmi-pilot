@@ -38,6 +38,7 @@ function(req, username, password, done) {
         	console.log('User Not Found with username '+ username_in_lower_case);
         	return done(null, false);                 
         }
+        
         // User exists but wrong password, log the error 
         if (!bcrypt.compareSync(password, result[0].password)){
         	console.log('Invalid Password');

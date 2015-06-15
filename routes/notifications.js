@@ -7,19 +7,21 @@ var noti_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Notification'
 var user_db = require('mongoskin').db('mongodb://52.8.188.79:27017/User');
 var ObjectID = require('mongoskin').ObjectID
 var apn = require('apn');
+var Notification = require('../objects/notification')
+
 var service = new apn.connection({
-    cert: __dirname + "/credentials/cert.pem.development",
-    key: __dirname + "/credentials/key.pem.development",
-    production: false,
-    passphrase: null,   
-    gateway: "gateway.sandbox.push.apple.com",              
-    port: 2195,                         
-    enhanced: true,                     
-    errorCallback: undefined,                       
-    cacheLength: 5
+	cert: __dirname + "/credentials/cert.pem.development",
+	key: __dirname + "/credentials/key.pem.development",
+	production: false,
+	passphrase: null,   
+	gateway: "gateway.sandbox.push.apple.com",              
+	port: 2195,                         
+	enhanced: true,                     
+	errorCallback: undefined,                       
+	cacheLength: 5
 });
 
-router.get('/', function(req, res, next) {
+router.get('/test', function(req, res, next) {
 	var token = req.query.token
 	dir = fs.readdirSync(__dirname + "/credentials")
 	console.log(__dirname + "/credentials")
@@ -27,21 +29,21 @@ router.get('/', function(req, res, next) {
 	console.log(token)
 
 	var json_obj = {
-    	"Hello" : {
-    		"me" : "you"
-    	}
-    }
+		"Hello" : {
+			"me" : "you"
+		}
+	}
 
 	var note = new apn.notification();
 	var tokens = []
 	tokens.push(token)
-    note.setAlertText("Hello, from node-apn!");
-    note.badge = 3;
-    note.sound = "ping.aiff";
-    note.contentAvailable = true
-    note.payload = json_obj
-    service.pushNotification(note, tokens);
-    
+	note.setAlertText("Hello, from node-apn!");
+	note.badge = 3;
+	note.sound = "ping.aiff";
+	note.contentAvailable = true
+	note.payload = json_obj
+	service.pushNotification(note, tokens);
+
 	var json = new JsonResponse(json_obj, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 	res.json(json);
 });
@@ -116,18 +118,77 @@ router.post('/user/stream/start', ensureAuthenticated, function(req, res, next){
 	res.json(json);
 });
 
+router.delete('/:id', ensureAuthenticated, function(req, res, next){
+	var noti_id = req.params.id
+	noti_db.collection('notification').remove({_id:ObjectID(noti_id)}, function(err, result) {
+		if (!err){
+			var json = new JsonResponse(result, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+			res.json(json);
+		}
+	});
+});
+
+router.get('/', ensureAuthenticated, function(req, res, next){
+	var uid = req.user._id
+	console.log(uid)
+
+	noti_db.collection('notification').find({recipient_id:uid, notified : false}).toArray(
+		function(err, result) {
+			if (!err){
+				for(var i in result) {
+					noti_db.collection('notification').update({_id:ObjectID(result[i]._id)}, {$set:{notified:true}}, function(err, result) {
+						console.log(err, result)
+					})
+				}
+				var json = new JsonResponse(result, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+				res.json(json);
+			}
+		});
+});
+
+router.put('/:id', ensureAuthenticated, function(req, res, next){
+	var noti_id = req.params.id
+	console.log(noti_id)
+	noti_db.collection('notification').update({_id:ObjectID(noti_id)}, {$set:{notified:true}}, function(err, result) {
+		console.log(err, result)
+	})
+});
+
+router.get('/sample', ensureAuthenticated, function(req, res, next){
+	var uid = req.user._id
+	var noti = new Notification("SAMPLE",uid,{
+		"Hello" : {
+			"me" : "you"
+		}
+	}, false)
+	noti.insert()
+	var json = new JsonResponse(noti, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+	res.json(json);
+});
+
+
 function push_notification(uid, alert, jsonObject){
 	var note = new apn.notification();
 	var tokens = []
-	user_db.collection('device_token').find({_id:ObjectID(uid)}).toArray(
-		function(err, result) {
-			console.log (result[0].token)
-			tokens.push(result[0].token)
-    		note.setAlertText(alert);
-    		note.badge = 1;
-    		note.contentAvailable = true
-    		note.payload = jsonObject
-    		service.pushNotification(note, tokens);
+
+	var noti = new Notification(alert,uid,jsonObject, false)
+	noti.insert()
+
+	noti_db.collection('notification').insert(this, function(err, noti_result) {
+		if (err){ 
+			throw err; 
+		}
+
+		user_db.collection('device_token').find({_id:ObjectID(uid)}).toArray(
+			function(err, result) {
+				console.log (result[0].token)
+				tokens.push(result[0].token)
+				note.setAlertText(alert);
+				note.badge = 1;
+				note.contentAvailable = true;
+				note.payload = noti_result[0];
+				service.pushNotification(note, tokens);
+			});
 	});
 }
 
