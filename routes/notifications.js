@@ -173,12 +173,16 @@ function push_notification(uid, alert, jsonObject){
 
 	var noti = new Notification(alert,uid,jsonObject, false)
 	//noti.insert()
+	async.whilst(
+		function(){
+		noti_db.collection('notification').insert(this, function(err, noti_result) {
+			if (err){ 
+				throw err; 
+			}
 
-	noti_db.collection('notification').insert(this, function(err, noti_result) {
-		if (err){ 
-			throw err; 
-		}
-
+			var noti_results = noti_result
+		})},
+		function (){
 		user_db.collection('device_token').find({_id:ObjectID(uid)}).toArray(
 			function(err, result) {
 				console.log (result[0].token)
@@ -186,10 +190,11 @@ function push_notification(uid, alert, jsonObject){
 				note.setAlertText(alert);
 				note.badge = 1;
 				note.contentAvailable = true;
-				note.payload = noti_result[0];
+				note.payload = noti_results[0];
 				service.pushNotification(note, tokens);
-			});
-	});
+			}
+		)}
+	);
 }
 
 function ensureAuthenticated(req, res, next) {
