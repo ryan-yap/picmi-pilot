@@ -172,24 +172,18 @@ function push_notification(uid, alert, jsonObject){
 	var tokens = []
 
 	var noti = new Notification(alert,uid,jsonObject, false)
-	//noti.insert()
+	noti.insert()
+	user_db.collection('device_token').find({_id:ObjectID(uid)}).toArray(
+		function(err, result) {
+			console.log (result[0].token)
+			tokens.push(result[0].token)
+			note.setAlertText(alert);
+			note.badge = 1;
+			note.contentAvailable = true;
+			note.payload = noti_result[0];
+			service.pushNotification(note, tokens);
+		});
 
-	noti_db.collection('notification').insert(this, function(err, noti_result) {
-		if (err){ 
-			throw err; 
-		}
-
-		user_db.collection('device_token').find({_id:ObjectID(uid)}).toArray(
-			function(err, result) {
-				console.log (result[0].token)
-				tokens.push(result[0].token)
-				note.setAlertText(alert);
-				note.badge = 1;
-				note.contentAvailable = true;
-				note.payload = noti_result[0];
-				service.pushNotification(note, tokens);
-			});
-	});
 }
 
 function ensureAuthenticated(req, res, next) {
