@@ -8,8 +8,8 @@ var user_db = require('mongoskin').db('mongodb://52.8.188.79:27017/User');
 var ObjectID = require('mongoskin').ObjectID
 var apn = require('apn');
 var service = new apn.connection({
-    cert: __dirname + "/credentials/cert.pem",
-    key: __dirname + "/credentials/key.pem",
+    cert: __dirname + "/credentials/cert.pem.development",
+    key: __dirname + "/credentials/key.pem.development",
     production: false,
     passphrase: null,   
     gateway: "gateway.push.apple.com",              
