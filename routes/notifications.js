@@ -131,6 +131,7 @@ router.delete('/:id', ensureAuthenticated, function(req, res, next){
 router.get('/', ensureAuthenticated, function(req, res, next){
 	var uid = req.user._id
 	console.log(uid)
+
 	noti_db.collection('notification').find({recipient_id:uid, notified : false}).toArray(
 		function(err, result) {
 			if (!err){
@@ -171,17 +172,24 @@ function push_notification(uid, alert, jsonObject){
 	var tokens = []
 
 	var noti = new Notification(alert,uid,jsonObject, false)
-	user_db.collection('device_token').find({_id:ObjectID(uid)}).toArray(
-		function(err, result) {
-			console.log (result[0].token)
-			tokens.push(result[0].token)
-			note.setAlertText(alert);
-			note.badge = 1;
-			note.contentAvailable = true;
-			note.payload = noti;
-			noti.insert()
-			service.pushNotification(note, tokens);
-		});
+	//noti.insert()
+
+	noti_db.collection('notification').insert(this, function(err, noti_result) {
+		if (err){ 
+			throw err; 
+		}
+
+		user_db.collection('device_token').find({_id:ObjectID(uid)}).toArray(
+			function(err, result) {
+				console.log (result[0].token)
+				tokens.push(result[0].token)
+				note.setAlertText(alert);
+				note.badge = 1;
+				note.contentAvailable = true;
+				note.payload = noti_result[0];
+				service.pushNotification(note, tokens);
+			});
+	});
 }
 
 function ensureAuthenticated(req, res, next) {
