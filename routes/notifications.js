@@ -172,7 +172,7 @@ function push_notification(uid, alert, jsonObject){
 	var tokens = []
 
 	var noti = new Notification(alert,uid,jsonObject, false)
-	noti.insert()
+	//noti.insert()
 
 	noti_db.collection('notification').insert(this, function(err, noti_result) {
 		if (err){ 
