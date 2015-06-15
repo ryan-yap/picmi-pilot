@@ -172,7 +172,7 @@ router.get('/sample', ensureAuthenticated, function(req, res, next){
 function push_notification(noti){
 	var note = new apn.notification();
 	var tokens = []
-	user_db.collection('device_token').find({_id:ObjectID(uid)}).toArray(
+	user_db.collection('device_token').find({_id:ObjectID(noti.recipient_id)}).toArray(
 		function(err, result) {
 			console.log (result[0].token)
 			tokens.push(result[0].token)
