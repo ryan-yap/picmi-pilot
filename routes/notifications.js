@@ -12,7 +12,7 @@ var service = new apn.connection({
     key: __dirname + "/credentials/key.pem.development",
     production: false,
     passphrase: null,   
-    gateway: "gateway.push.apple.com",              
+    gateway: "gateway.sandbox.push.apple.com",              
     port: 2195,                         
     enhanced: true,                     
     errorCallback: undefined,                       
