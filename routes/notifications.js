@@ -178,7 +178,7 @@ function push_notification(uid, alert, jsonObject){
 			note.setAlertText(alert);
 			note.badge = 1;
 			note.contentAvailable = true;
-			note.payload = noti_result[0];
+			note.payload = noti;
 			noti.insert()
 			service.pushNotification(note, tokens);
 		});
