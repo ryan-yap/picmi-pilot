@@ -1,4 +1,4 @@
-var report_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Report');
+var report_db = require('mongoskin').db('mongodb://54.153.62.38:27017/Report');
 
 function Report(user_id, message, category, rate) {
 	this.user_id = user_id;

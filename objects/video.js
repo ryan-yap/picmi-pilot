@@ -1,4 +1,4 @@
-var video_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Video');
+var video_db = require('mongoskin').db('mongodb://54.153.62.38:27017/Video');
 
 function Video(key, uploader, recipient, timestamp) {
 	this.key = key;

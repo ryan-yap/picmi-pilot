@@ -1,4 +1,4 @@
-var agent_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Agent');
+var agent_db = require('mongoskin').db('mongodb://54.153.62.38:27017/Agent');
 var Account = require("./account")
 var Profile = require('./profile')
 

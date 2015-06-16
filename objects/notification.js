@@ -1,4 +1,4 @@
-var noti_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Notification');
+var noti_db = require('mongoskin').db('mongodb://54.153.62.38:27017/Notification');
 
 function Notification(noti_type, recipient_id, obj, notified) {
 	this.noti_type = noti_type;

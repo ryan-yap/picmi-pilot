@@ -1,4 +1,4 @@
-var stream_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Stream');
+var stream_db = require('mongoskin').db('mongodb://54.153.62.38:27017/Stream');
 
 function Stream(user_id, driver_id, session_id, token) {
 	this.user_id = user_id;

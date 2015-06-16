@@ -7,7 +7,7 @@ var Payment = require('../objects/payment')
 var Banking = require('../objects/banking')
 var Device_Token = require('../objects/device_token')
 var JsonResponse = require('../objects/jsonresponse')
-var user_db = require('mongoskin').db('mongodb://52.8.188.79:27017/User');
+var user_db = require('mongoskin').db('mongodb://54.153.62.38:27017/User');
 var ObjectID = require('mongoskin').ObjectID
 
 // Getting the user's information

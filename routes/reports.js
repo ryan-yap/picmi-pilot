@@ -2,7 +2,7 @@ var express = require('express');
 var passport = require('../passports/passport.js');
 var router = express.Router();
 var JsonResponse = require('../objects/jsonresponse')
-var report_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Report');
+var report_db = require('mongoskin').db('mongodb://54.153.62.38:27017/Report');
 var Report = require('../objects/report')
 var ObjectID = require('mongoskin').ObjectID
 

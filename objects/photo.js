@@ -1,4 +1,4 @@
-var photo_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Photo');
+var photo_db = require('mongoskin').db('mongodb://54.153.62.38:27017/Photo');
 
 function Photo(key, uploader, recipient, timestamp) {
 	this.key = key;
