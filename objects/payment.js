@@ -1,4 +1,4 @@
-var user_db = require('mongoskin').db('mongodb://54.153.62.38:27017/User');
+var user_db = require('mongoskin').db('mongodb://52.8.188.79:27017/User');
 
 function Payment(card_number, cvv, exp_date, postal_code) {
 	this.card_number = card_number;

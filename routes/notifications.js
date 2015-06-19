@@ -3,18 +3,18 @@ var passport = require('../passports/passport.js');
 var fs = require('fs')
 var router = express.Router();
 var JsonResponse = require('../objects/jsonresponse')
-var noti_db = require('mongoskin').db('mongodb://54.153.62.38:27017/Notification');
-var user_db = require('mongoskin').db('mongodb://54.153.62.38:27017/User');
+var noti_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Notification');
+var user_db = require('mongoskin').db('mongodb://52.8.188.79:27017/User');
 var ObjectID = require('mongoskin').ObjectID
 var apn = require('apn');
 var Notification = require('../objects/notification')
 
 var service = new apn.connection({
-	cert: __dirname + "/credentials/cert.pem.production",
-	key: __dirname + "/credentials/key.pem.production",
+	cert: __dirname + "/credentials/cert.pem.development",
+	key: __dirname + "/credentials/key.pem.development",
 	production: false,
 	passphrase: null,   
-	gateway: "gateway.push.apple.com",              
+	gateway: "gateway.sandbox.push.apple.com",              
 	port: 2195,                         
 	enhanced: true,                     
 	errorCallback: undefined,                       

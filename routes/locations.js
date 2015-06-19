@@ -2,10 +2,10 @@ var express = require('express');
 var passport = require('../passports/passport.js')
 var router = express.Router();
 var redis = require('redis'),
-client = redis.createClient(6379, '54.67.18.228', {})
+client = redis.createClient(6379, '52.8.106.163', {})
 var geolib = require('geolib')
 var JsonResponse = require('../objects/jsonresponse')
-var user_db = require('mongoskin').db('mongodb://54.153.62.38:27017/User');
+var user_db = require('mongoskin').db('mongodb://52.8.188.79:27017/User');
 var ObjectID = require('mongoskin').ObjectID
 
 var proximity = require('geo-proximity').initialize(client)
