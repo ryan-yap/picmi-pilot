@@ -141,11 +141,11 @@ router.get('/', ensureAuthenticated, function(req, res, next){
 	noti_db.collection('notification').find({recipient_id:uid}).sort({timestamp:-1}).toArray(
 		function(err, result) {
 			if (!err){
-				for(var i in result) {
+				/*for(var i in result) {
 					noti_db.collection('notification').update({_id:ObjectID(result[i]._id)}, {$set:{notified:true}}, function(err, result) {
 						console.log(err, result)
 					})
-				}
+				}*/
 				var json = new JsonResponse(result, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 				res.json(json);
 			}
