@@ -12,7 +12,7 @@ var Notification = require('../objects/notification')
 var service = new apn.connection({
 	cert: __dirname + "/credentials/cert.pem.development",
 	key: __dirname + "/credentials/key.pem.development",
-	production: false,
+	production: true,
 	passphrase: null,   
 	gateway: "gateway.sandbox.push.apple.com",              
 	port: 2195,                         
