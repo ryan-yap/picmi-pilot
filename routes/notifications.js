@@ -138,7 +138,7 @@ router.get('/', ensureAuthenticated, function(req, res, next){
 	var uid = req.user._id
 	console.log(uid)
 
-	noti_db.collection('notification').find({recipient_id:uid, notified : false}).toArray(
+	noti_db.collection('notification').find({recipient_id:uid}).sort({timestamp:-1}).toArray(
 		function(err, result) {
 			if (!err){
 				for(var i in result) {

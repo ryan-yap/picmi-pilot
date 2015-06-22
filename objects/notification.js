@@ -5,6 +5,7 @@ function Notification(noti_type, recipient_id, obj, notified) {
 	this.recipient_id = recipient_id;
 	this.obj = obj;
 	this.notified = notified
+	this.timestamp = Date.now()
 }
 
 Notification.prototype.insert = function (callback) {
