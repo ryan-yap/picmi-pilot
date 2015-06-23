@@ -3,6 +3,8 @@ var passport = require('../passports/passport.js')
 var User = require('../objects/user')
 var JsonResponse = require('../objects/jsonresponse')
 var Device_Token = require('../objects/device_token')
+var user_db = require('mongoskin').db('mongodb://52.8.188.79:27017/User');
+var ObjectID = require('mongoskin').ObjectID
 var router = express.Router();
 
 // Return a logged in user's object to the client
@@ -20,8 +22,14 @@ router.post('/', passport.authenticate('user-login'), function(req, res, next){
 		device_token.insert(req.user._id)
 		user.device_token = device_token
 	}
-	var json = new JsonResponse(user, "session", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
-	res.json(json);
+
+	user_db.collection('profile').find({_id:ObjectID(req.user._id)}).toArray(
+		function(err, result) {
+			user.profile = result[0]
+			var json = new JsonResponse(user, "session", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+			res.json(json);
+		}
+	);
 });
 
 // Currently do not allow user to modify session. Will be implemented if required.
