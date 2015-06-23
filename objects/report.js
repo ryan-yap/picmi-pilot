@@ -5,6 +5,7 @@ function Report(user_id, message, category, rate) {
 	this.message = message;
 	this.category = category;
 	this.rate = rate;
+	this.timestamp = Date.now()
 }
 
 Report.prototype.insert = function () {
