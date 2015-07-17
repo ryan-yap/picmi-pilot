@@ -50,7 +50,7 @@ router.get('/test', function(req, res, next) {
 router.post('/driver', ensureAuthenticated, function(req, res, next){
 	var jsonObject = req.body
 	var alert = "Photo Request"
-	var uid = jsonObject.key
+	var uid = jsonObject.driver_id
 	console.log(jsonObject)
 	var noti = new Notification(alert,uid,jsonObject, false)
 	noti.insert(push_notification)
@@ -94,7 +94,7 @@ router.post('/driver/decline', ensureAuthenticated, function(req, res, next){
 router.post('/user/cancel', ensureAuthenticated, function(req, res, next){
 	var jsonObject = req.body
 	var alert = "Job Cancelled"
-	var uid = jsonObject.key
+	var uid = jsonObject.driver_id
 	console.log(jsonObject)
 	var noti = new Notification(alert,uid,jsonObject, false)
 	noti.insert(push_notification)
