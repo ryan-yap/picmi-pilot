@@ -76,9 +76,6 @@ router.post('/user', ensureAuthenticated, function(req, res, next){
 	var alert = "Photo Response"
 	var uid = jsonObject.requester_id
 	console.log(jsonObject)
-	job_db.collection('jobs').update({jobID:jsonObject.jobID, requester_id: jsonObject.requester_id}, {'$set':{driver_name:jsonObject.username, isResponded:true}}, function(err) {
-		if (err) throw err;
-	});
 	var noti = new Notification(alert,uid,jsonObject, false)
 	noti.insert(push_notification)
 	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
@@ -90,6 +87,9 @@ router.post('/driver/accept', ensureAuthenticated, function(req, res, next){
 	var alert = "Request Accepted"
 	var uid = jsonObject.requester_id
 	console.log(jsonObject)
+	job_db.collection('jobs').update({jobID:jsonObject.jobID, requester_id: jsonObject.requester_id}, {'$set':{driver_name:jsonObject.username, isResponded:true}}, function(err) {
+		if (err) throw err;
+	});
 	var noti = new Notification(alert,uid,jsonObject, false)
 	noti.insert(push_notification)
 	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
