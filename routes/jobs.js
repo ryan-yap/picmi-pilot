@@ -7,11 +7,19 @@ var ObjectID = require('mongoskin').ObjectID
 var job_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Job');
 
 router.get('/jobs', ensureAuthenticated, function(req, res, next) {
-
+	var id = req.user._id
+	job_db.collection('jobs').find({driver_id: id}).toArray(function(err, result) {
+		var json = new JsonResponse(result, "Job", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+		res.json(json);
+	});
 });
 
 router.get('/requests', ensureAuthenticated, function(req, res, next) {
-
+	var id = req.user._id
+	job_db.collection('jobs').find({requester_id: id}).toArray(function(err, result) {
+		var json = new JsonResponse(result, "Job", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+		res.json(json);
+	});
 });
 
 router.post('/', ensureAuthenticated, function(req, res, next) {
