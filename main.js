@@ -18,6 +18,7 @@ var videos = require('./routes/videos')
 var streams = require('./routes/streams')
 var reports = require('./routes/reports')
 var notifications = require('./routes/notifications')
+var jobs = require('./routes/jobs')
 var tests = require('./routes/test')
 
 var app = express();
@@ -69,6 +70,7 @@ app.use('/streams', streams)
 app.use('/reports', reports)
 app.use('/notifications', notifications)
 app.use('/test', tests)
+app.use('/jobs', jobs)
 
 //========================Socket.io Handling======================
 //

@@ -54,17 +54,6 @@ router.post('/driver', ensureAuthenticated, function(req, res, next){
 	var alert = "Photo Request"
 	var uid = jsonObject.driver_id
 	console.log(jsonObject)
-
-	job_db.collection('jobs').find({jobID:jsonObject.jobID, requester_id: jsonObject.requester_id}).toArray(function(err, result) {
-		if(result[0]){
-			job_db.collection('jobs').update({jobID:jsonObject.jobID, requester_id: jsonObject.requester_id}, {'$set':{driver_id:jsonObject.driver_id, distance:jsonObject.distance}}, function(err) {
-				if (err) throw err;
-			});
-		}else{
-			var job = new Job(jsonObject.distance, jsonObject.location_name, jsonObject.message, jsonObject.objecttype, jsonObject.longitude, jsonObject.latitude, jsonObject.jobID, jsonObject.requester_id, jsonObject.driver_id, jsonObject.username, "")
-			job.insert()
-		}
-	});
 	var noti = new Notification(alert,uid,jsonObject, false)
 	noti.insert(push_notification)
 	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
@@ -87,9 +76,6 @@ router.post('/driver/accept', ensureAuthenticated, function(req, res, next){
 	var alert = "Request Accepted"
 	var uid = jsonObject.requester_id
 	console.log(jsonObject)
-	job_db.collection('jobs').update({jobID:jsonObject.jobID, requester_id: jsonObject.requester_id}, {'$set':{driver_name:jsonObject.username, isResponded:true}}, function(err) {
-		if (err) throw err;
-	});
 	var noti = new Notification(alert,uid,jsonObject, false)
 	noti.insert(push_notification)
 	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
