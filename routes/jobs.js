@@ -40,7 +40,12 @@ router.put('/', ensureAuthenticated, function(req, res, next) {
 });
 
 router.delete('/', ensureAuthenticated, function(req, res, next) {
-
+	var jsonObject = req.body
+	job_db.collection('jobs').remove({jobID:jsonObject.jobID, requester_id: jsonObject.requester_id}, function(err, result) {
+	    if (!err) console.log('VR deleted!');
+	});
+	var json = new JsonResponse(jsonObject, "Job", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+	res.json(json);
 });
 
 function ensureAuthenticated(req, res, next) {
