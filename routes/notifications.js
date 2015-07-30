@@ -56,7 +56,7 @@ router.post('/driver', ensureAuthenticated, function(req, res, next){
 	console.log(jsonObject)
 
 	job_db.collection('jobs').find({jobID:jsonObject.jobID, requester_id: jsonObject.requester_id}).toArray(function(err, result) {
-		if(result){
+		if(result[0]){
 			job_db.collection('jobs').update({jobID:jsonObject.jobID, requester_id: jsonObject.requester_id}, {'$set':{driver_id:jsonObject.driver_id, distance:jsonObject.distance}}, function(err) {
 				if (err) throw err;
 			});
