@@ -30,7 +30,7 @@ router.post('/', ensureAuthenticated, function(req, res, next) {
 				if (err) throw err;
 			});
 		}else{
-			var job = new Job(jsonObject.distance, jsonObject.location_name, jsonObject.message, jsonObject.objecttype, jsonObject.longitude, jsonObject.latitude, jsonObject.jobID, jsonObject.requester_id, jsonObject.driver_id, jsonObject.username, "")
+			var job = new Job(jsonObject.distance, jsonObject.location_name, jsonObject.message, jsonObject.objecttype, jsonObject.longitude, jsonObject.latitude, jsonObject.jobID, jsonObject.requester_id, jsonObject.driver_id, jsonObject.username, "", jsonObject.image_urls)
 			job.insert()
 		}
 	});
