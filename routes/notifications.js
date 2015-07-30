@@ -5,9 +5,11 @@ var router = express.Router();
 var JsonResponse = require('../objects/jsonresponse')
 var noti_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Notification');
 var user_db = require('mongoskin').db('mongodb://52.8.188.79:27017/User');
+var job_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Job');
 var ObjectID = require('mongoskin').ObjectID
 var apn = require('apn');
 var Notification = require('../objects/notification')
+var Job = require('../objects/job')
 
 var service = new apn.connection({
 	cert: __dirname + "/credentials/cert.pem.development",
@@ -52,6 +54,8 @@ router.post('/driver', ensureAuthenticated, function(req, res, next){
 	var alert = "Photo Request"
 	var uid = jsonObject.driver_id
 	console.log(jsonObject)
+	var job = new Job(jsonObject.distance, jsonObject.location_name, jsonObject.message, jsonObject.objecttype, jsonObject.longitude, jsonObject.latitude, jsonObject.jobID, jsonObject.requester_id, jsonObject.driver_id, jsonObject.username, "")
+	job.insert()
 	var noti = new Notification(alert,uid,jsonObject, false)
 	noti.insert(push_notification)
 	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
