@@ -30,7 +30,7 @@ router.post('/', ensureAuthenticated, function(req, res, next) {
 				if (err) throw err;
 			});
 		}else{
-			var job = new Job(jsonObject.distance, jsonObject.location_name, jsonObject.message, jsonObject.objecttype, jsonObject.longitude, jsonObject.latitude, jsonObject.jobID, jsonObject.requester_id, jsonObject.driver_id, jsonObject.username, "", jsonObject.image_urls)
+			var job = new Job(jsonObject.distance, jsonObject.location_name, jsonObject.message, jsonObject.objecttype, jsonObject.longitude, jsonObject.latitude, jsonObject.jobID, jsonObject.requester_id, jsonObject.driver_id, jsonObject.requester_username, "", jsonObject.image_urls)
 			job.insert()
 		}
 	});
@@ -40,7 +40,7 @@ router.post('/', ensureAuthenticated, function(req, res, next) {
 
 router.put('/', ensureAuthenticated, function(req, res, next) {
 	var jsonObject = req.body
-	job_db.collection('jobs').update({jobID:jsonObject.jobID, requester_id: jsonObject.requester_id}, {'$set':{driver_name:jsonObject.username, isResponded:true}}, function(err) {
+	job_db.collection('jobs').update({jobID:jsonObject.jobID, requester_id: jsonObject.requester_id}, {'$set':{driver_name:jsonObject.driver_name, isResponded:true}}, function(err) {
 		if (err) throw err;
 	});
 	var json = new JsonResponse(jsonObject, "Job", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
