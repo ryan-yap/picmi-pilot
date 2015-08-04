@@ -186,6 +186,12 @@ function push_notification(noti){
 			tokens.push(result[0].token)
 			note.setAlertText(noti.noti_type);
 			note.badge = 1;
+			if(noti.noti_type == "Stream Request"){
+				note.sound = "ringtone.mp3"
+			}else{
+				note.sound = "ping.aiff"
+			}
+
 			note.contentAvailable = true;
 			note.payload = noti;
 			service.pushNotification(note, tokens);
