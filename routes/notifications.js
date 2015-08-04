@@ -126,6 +126,17 @@ router.post('/user/stream/start', ensureAuthenticated, function(req, res, next){
 	res.json(json);
 });
 
+router.post('/driver/stream/decline', ensureAuthenticated, function(req, res, next){
+	var jsonObject = req.body
+	var alert = "Decline Streaming"
+	var uid = jsonObject.requester_id
+	console.log(jsonObject)
+	var noti = new Notification(alert,uid,jsonObject, false)
+	noti.insert(push_notification)
+	var json = new JsonResponse(jsonObject, "Notification", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+	res.json(json);
+});
+
 router.delete('/:id', ensureAuthenticated, function(req, res, next){
 	var noti_id = req.params.id
 	noti_db.collection('notification').remove({_id:ObjectID(noti_id)}, function(err, result) {
