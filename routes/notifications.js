@@ -129,7 +129,7 @@ router.post('/user/stream/start', ensureAuthenticated, function(req, res, next){
 router.post('/driver/stream/decline', ensureAuthenticated, function(req, res, next){
 	var jsonObject = req.body
 	var alert = "Decline Streaming"
-	var uid = jsonObject.requester_id
+	var uid = jsonObject.driver_id
 	console.log(jsonObject)
 	var noti = new Notification(alert,uid,jsonObject, false)
 	noti.insert(push_notification)
