@@ -38,9 +38,11 @@ router.put('/', ensureAuthenticated, function(req, res, next){
 });
 
 // Deleting a session for the user. Eg. logging the user out. 
-router.delete('/', ensureAuthenticated, function(req, res, next){
-	req.logout()
-	var json = new JsonResponse(req.user, "session", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+router.delete('/', function(req, res, next){
+	console.log("Logging out")
+	req.logOut()
+	console.log("Logging out")
+	var json = new JsonResponse(null, "session", "www.picmiapp.com" + req.originalUrl, req.method, null, null)
 	res.json(json);
 });
 
