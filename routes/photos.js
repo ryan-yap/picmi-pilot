@@ -7,6 +7,7 @@ var JsonResponse = require('../objects/jsonresponse')
 var ObjectID = require('mongoskin').ObjectID
 var s3 = new AWS.S3(); 
 var photo_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Photo');
+var user_db = require('mongoskin').db('mongodb://52.8.188.79:27017/User');
 AWS.config.update({
     accessKeyId: "AKIAICVKGCDJ6XYSVS6Q",
     secretAccessKey: "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",
@@ -106,6 +107,25 @@ router.get('/upload', ensureAuthenticated, function(req, res, next){
 		});
 	}
 })
+//TODO: make sure the parameter is provided and both UID and RID are valid userids.
+//TODO: error handling 
+router.get('/profile/upload', ensureAuthenticated, function(req, res, next){
+	var time = Date.now()
+	var uid = req.user._id;
+	var key = "profile/"+ uid + "/" + time.toString();
+
+	var params = {Bucket: 'picmi-photo', Key: key, Expires: 180, ACL: "public-read", ContentType: "image/jpeg"};
+	s3.getSignedUrl('putObject', params, function (err, url) {
+  		if (err) {
+  			console.log(err);
+  		}
+  		else{
+			var json = new JsonResponse({upload_url : url, timestamp : time.toString()}, "photo", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+	       	res.json(json)
+		}
+	});
+})
+
 
 function ensureAuthenticated(req, res, next) {
   if (req.user) { 

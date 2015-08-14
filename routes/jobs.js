@@ -30,10 +30,11 @@ router.post('/', ensureAuthenticated, function(req, res, next) {
 				if (err) throw err;
 			});
 		}else{
-			var job = new Job(jsonObject.distance, jsonObject.location_name, jsonObject.message, jsonObject.objecttype, jsonObject.longitude, jsonObject.latitude, jsonObject.jobID, jsonObject.requester_id, jsonObject.driver_id, jsonObject.requester_username, "", jsonObject.image_urls)
+			var job = new Job(jsonObject.distance, jsonObject.location_name, jsonObject.message, jsonObject.objecttype, jsonObject.longitude, jsonObject.latitude, jsonObject.jobID, jsonObject.requester_id, jsonObject.driver_id, jsonObject.requester_username, "", jsonObject.image_urls,jsonObject.requester_url,jsonObject.driver_url)
 			job.insert()
 		}
 	});
+	
 	var json = new JsonResponse(jsonObject, "Job", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 	res.json(json);
 });

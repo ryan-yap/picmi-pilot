@@ -4,6 +4,7 @@ function Profile(firstname, lastname, email, mobile_number) {
 	this.email = email.toLowerCase();
 	this.mobile_number = mobile_number;
 	this._id = null;
+	this.profile_pic = null;
 }
 
 Profile.prototype.insert = function (id , db) {

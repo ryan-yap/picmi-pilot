@@ -90,7 +90,7 @@ router.post('/', passport.authenticate('user-signup'), function(req, res, next){
 });
 
 //TODO: implement this function
-router.put('/profile', ensureAuthenticated, function(req, res, next) {
+router.put('/profile/username', ensureAuthenticated, function(req, res, next) {
 	var user_id = req.user._id
 	var jsonObject = req.body
 	if (user_id){
@@ -102,6 +102,30 @@ router.put('/profile', ensureAuthenticated, function(req, res, next) {
 			});
 
 			job_db.collection('jobs').update({driver_id: user_id}, {'$set':{driver_name:jsonObject.firstname}}, function(err) {
+				if (err) throw err;
+			});
+
+			var json = new JsonResponse(jsonObject, "user", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+			res.json(json);
+		});
+	}else{
+		var json = new JsonResponse(jsonObject, "user", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+		res.json(json);
+	}
+});
+
+router.put('/profile/picture', ensureAuthenticated, function(req, res, next) {
+	var user_id = req.user._id
+	var jsonObject = req.body
+	if (user_id){
+		user_db.collection('profile').update({_id:ObjectID(user_id)}, {'$set':{profile_pic:jsonObject.url}}, function(err) {
+			if (err) throw err;
+
+			job_db.collection('jobs').update({requester_id: user_id}, {'$set':{requester_url:jsonObject.url}}, function(err) {
+				if (err) throw err;
+			});
+
+			job_db.collection('jobs').update({driver_id: user_id}, {'$set':{driver_url:jsonObject.url}}, function(err) {
 				if (err) throw err;
 			});
 
