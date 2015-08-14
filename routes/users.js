@@ -5,9 +5,11 @@ var User = require('../objects/user')
 var Profile = require('../objects/profile')
 var Payment = require('../objects/payment')
 var Banking = require('../objects/banking')
+var job_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Job');
 var Device_Token = require('../objects/device_token')
 var JsonResponse = require('../objects/jsonresponse')
 var user_db = require('mongoskin').db('mongodb://52.8.188.79:27017/User');
+var noti_db = require('mongoskin').db('mongodb://52.8.188.79:27017/Notification');
 var ObjectID = require('mongoskin').ObjectID
 
 // Getting the user's information
@@ -94,6 +96,15 @@ router.put('/profile', ensureAuthenticated, function(req, res, next) {
 	if (user_id){
 		user_db.collection('profile').update({_id:ObjectID(user_id)}, {'$set':{firstname:jsonObject.firstname}}, function(err) {
 			if (err) throw err;
+
+			job_db.collection('jobs').update({requester_id: user_id}, {'$set':{requester_username:jsonObject.firstname}}, function(err) {
+				if (err) throw err;
+			});
+
+			job_db.collection('jobs').update({driver_id: user_id}, {'$set':{driver_name:jsonObject.firstname}}, function(err) {
+				if (err) throw err;
+			});
+
 			var json = new JsonResponse(jsonObject, "user", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
 			res.json(json);
 		});
