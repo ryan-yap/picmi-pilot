@@ -88,8 +88,19 @@ router.post('/', passport.authenticate('user-signup'), function(req, res, next){
 });
 
 //TODO: implement this function
-router.put('/', ensureAuthenticated, function(req, res, next) {
-	res.send("Modify user object")	
+router.put('/profile', ensureAuthenticated, function(req, res, next) {
+	var user_id = req.user._id
+	var jsonObject = req.body
+	if (user_id){
+		user_db.collection('profile').update({_id:ObjectID(user_id)}, {'$set':{firstname:jsonObject.firstname}}, function(err) {
+			if (err) throw err;
+			var json = new JsonResponse(jsonObject, "user", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+			res.json(json);
+		});
+	}else{
+		var json = new JsonResponse(jsonObject, "user", "www.picmiapp.com" + req.originalUrl, req.method, req.user._id, null)
+		res.json(json);
+	}
 });
 
 function ensureAuthenticated(req, res, next) {
